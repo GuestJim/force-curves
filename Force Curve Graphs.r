@@ -1,7 +1,8 @@
 library(readr)
 library(ggplot2)
 # library(shiny)
-setwd("C:/Users/Jim/Documents/ThereminGoat/force-curves")
+# setwd("C:/Users/Jim/Documents/ThereminGoat/force-curves")
+setwd("E:/Users/Jim/My Documents/Ideas/Switch Force Curve Graphs/force-curves")
 
 CSVs	=	list.files(recursive = TRUE, pattern = "*CSV.csv")
 CSVsHR	=	list.files(recursive = TRUE, pattern = "*RAW.csv")
@@ -20,7 +21,7 @@ DATA	=	read_csv(CSVs[1], skip = LINE - 1, guess_max = 10, lazy = TRUE, show_col_
 BOT	=	ceiling(median(which(DATA$Displacement == max(DATA$Displacement))))
 #	finds values at the maximum displacement (bottom out) and finds the middle of those measurements
 
-DATA$Stroke	=	ordered(ifelse(1:nrow(DATA) < BOT, "Down", "Up"), c("Down", "Up"))
+DATA$Stroke		=	ordered(ifelse(1:nrow(DATA) < BOT, "Down", "Up"), c("Down", "Up"))
 DATA$Reflect	=	ifelse(DATA$Stroke == "Down", DATA$Displacement, -DATA$Displacement)
 
 STROKEcolor	=	scale_color_manual(values = c("Down" = "black", "Up" = "grey"), guide = "none")

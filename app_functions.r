@@ -1,0 +1,1 @@
+simpsplit	=	function(...)	unlist(strsplit(...))
