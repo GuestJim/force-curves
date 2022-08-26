@@ -4,11 +4,10 @@ ui	<-	ui <- function(request)	{fluidPage(
 	sidebarLayout(
 		sidebarPanel(
 			selectInput('dataSel',	label = "Switch Selection",	choices = FILES,	size = 10,	multiple = TRUE,	selectize = FALSE),
-			helpText("Ctrl and Shift to select multiple")
+			helpText("Ctrl and Shift to select multiple"),
 		),
 		mainPanel(
-			# textOutput("test")
-			uiOutput('graphFORCE')
+			uiOutput('graphFORCE'),
 		)
 	)
 )
