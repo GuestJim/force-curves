@@ -3,11 +3,12 @@ ui	<-	ui <- function(request)	{fluidPage(
 	titlePanel("Interactive Force Curve Graphs"),
 	sidebarLayout(
 		sidebarPanel(
-			selectInput('dataSel',	label = "Switch Selection",	choices = FILES,	multiple = TRUE,	selectize = FALSE),
+			selectInput('dataSel',	label = "Switch Selection",	choices = FILES,	size = 10,	multiple = TRUE,	selectize = FALSE),
 			helpText("Ctrl and Shift to select multiple")
 		),
 		mainPanel(
-			textOutput("test")
+			# textOutput("test")
+			uiOutput('graphFORCE')
 		)
 	)
 )

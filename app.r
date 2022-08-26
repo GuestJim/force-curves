@@ -13,6 +13,7 @@ FILES	=	as.list(setNames(CSVs, gsub("(.*)/.*", "\\1", CSVs)))
 source("app_UI.r", local = TRUE)
 
 server <- function(input, output, session) {
+	source("app_graphs.r", local = TRUE)
 	observeEvent(input$dataSel,	{
 		output$test	<-	renderText(input$dataSel)
 	}	)
