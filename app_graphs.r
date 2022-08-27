@@ -14,7 +14,7 @@ graphSTROKE	<-	function()	{
 	theme(legend.position = "top")
 }
 
-observeEvent(list(input$dataSel, input$forceScale),	{
+observeEvent(input$dataSel,	{
 	FACETS	<-	tagList(
 		lapply(input$dataSel, function(i)	{
 			IN			<-	findDATA(i)
@@ -31,7 +31,6 @@ observeEvent(list(input$dataSel, input$forceScale),	{
 })
 
 observeEvent(input$dataLayer,	{
-	# output$graphLAYER	<-	renderPlot(	STROKElayer(input$dataLayer),	res = 90)
 	output$graphLAYER	<-	renderPlot(	
 	{	graphSTROKE() + ggtitle("Force Curve Overlay") + 
 		lapply(input$dataLayer, function(i)	{
