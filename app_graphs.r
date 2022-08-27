@@ -29,7 +29,9 @@ observeEvent(separatSEL(),	{
 
 	output$graphSEP	<-	renderUI(FACETS)
 })
-observeEvent(input$dataSelClear,	output$graphSEP	<-	NULL)
+observeEvent(input$dataSelClear,	{
+	updateSelectInput(inputId = "dataSel", selected = "")	;	output$graphSEP	<-	NULL
+}	)
 
 observeEvent(overlaySEL(),	{
 	output$graphLAY	<-	renderPlot(	
@@ -40,6 +42,6 @@ observeEvent(overlaySEL(),	{
 		}	)
 	},	res = 90)
 })
-observeEvent(input$dataLayerClear,	output$graphLAY	<-	NULL)
-
-
+observeEvent(input$dataLayerClear,	{
+	updateSelectInput(inputId = "dataLayer", selected = "")	;	output$graphLAY	<-	NULL
+}	)
