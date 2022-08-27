@@ -1,15 +1,26 @@
+selectionUI	<-	function(id)	{
+	ns	<-	NS(id)
+	
+	pasteID	<-	function(IN = NULL)	paste0("data", as.character(id), IN)
+	
+	tagList(
+		sidebarPanel(
+			helpText("Ctrl and Shift to select multiple"),
+			selectInput(pasteID(),		label = "Switch Selection",	choices = FILES,	size = 10,	multiple = TRUE,	selectize = FALSE),
+			selectizeInput(pasteID("IZE"),		label = "Switch Search",	choices = FILES,	multiple = TRUE),
+			actionButton(pasteID("Clear"),	label = "Clear Selection"),
+			actionButton(pasteID("Apply"),	label = "Apply Selection to Overlay"),
+			hr(),
+			bookmarkButton(label = "Bookmark Switch Selection",	title = "Bookmark Switch Selection"),
+		)
+	)
+}
+
 ui	<-	ui <- function(request)	{
 	navbarPage("Interactive Force Curve Graphs",
 		tabPanel("Separate Graphs",
 			sidebarLayout(
-				sidebarPanel(
-					helpText("Ctrl and Shift to select multiple"),
-					selectInput('dataSel',		label = "Switch Selection",	choices = FILES,	size = 10,	multiple = TRUE,	selectize = FALSE),
-					# selectizeInput('dataSel',	label = "Switch Selection",	choices = FILES,	multiple = TRUE),
-					selectizeInput('dataSelIZE',		label = "Switch Search",	choices = FILES,	multiple = TRUE),
-					actionButton('dataSelClear',	label = "Clear Selection"),
-					actionButton('dataSelApply',	label = "Apply Selection to Overlay"),
-				),
+				selectionUI("Sel"),
 				mainPanel(
 					uiOutput('graphSEP'),
 				)
@@ -17,18 +28,11 @@ ui	<-	ui <- function(request)	{
 		),
 		tabPanel("Overlay Graph",
 			sidebarLayout(
-				sidebarPanel(
-					helpText("Ctrl and Shift to select multiple"),
-					selectInput('dataLayer',	label = "Switch Selection",	choices = FILES,	size = 10,	multiple = TRUE,	selectize = FALSE),
-					# selectInput('dataLayer',	label = "Switch Selection",	choices = FILES,	multiple = TRUE,	selectize = TRUE),
-					selectizeInput('dataLayerIZE',		label = "Switch Search",	choices = FILES,	multiple = TRUE),
-					actionButton('dataLayerClear',	label = "Clear Selection"),
-					actionButton('dataLayerApply',	label = "Apply Selection to Separate Graphs"),
-				),
+				selectionUI("Layer"),
 				mainPanel(
 					plotOutput('graphLAY',	height = "520px"),
 				)
 			)
-		)
+		),
 	)
 }

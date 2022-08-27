@@ -19,6 +19,7 @@ FILES	=	as.list(setNames(CSVs, gsub("(.*)/.*", "\\1", CSVs)))
 source("app_UI.r", local = TRUE)
 
 server <- function(input, output, session) {
+	setBookmarkExclude(c("dataSelApply", "dataSelClear", "dataSelIZE", "dataLayerApply", "dataLayerClear", "dataLayerIZE"))
 	separatSEL	<-	reactiveVal()	;	observe(	separatSEL(input$dataSel)	)
 	overlaySEL	<-	reactiveVal()	;	observe(	overlaySEL(input$dataLayer)	)
 	
