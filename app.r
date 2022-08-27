@@ -1,6 +1,6 @@
 library(shiny)
 # setwd("C:/Users/Jim/Documents/ThereminGoat/force-curves")
-setwd("E:/Users/Jim/My Documents/Ideas/Switch Force Curve Graphs/force-curves")
+# setwd("E:/Users/Jim/My Documents/Ideas/Switch Force Curve Graphs/force-curves")
 # runApp()
 
 #	plot caching options
