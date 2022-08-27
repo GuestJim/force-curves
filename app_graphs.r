@@ -9,14 +9,14 @@ graphSTROKE	<-	function()	{
 	ggplot() +
 	geom_vline(xintercept = 0) + geom_hline(yintercept = 0) +
 	scale_x_continuous(name	=	"Displacement (mm)",	breaks	=	-5:5) +
-	scale_y_continuous(name	=	"Force (gf)",			breaks	=	seq(0, 1000, by = 20)) +
+	scale_y_continuous(name	=	"Force (gf)",			breaks	=	seq(0, 1000, by = 20),	limits = c(0, NA)) +
 	facet_grid(cols = vars(Stroke), scales = "free_x", labeller = labeller(Stroke = function(IN) paste0(IN, " Stroke"))) + 
 	theme(legend.position = "top")
 }
 
-observeEvent(input$dataSel,	{
+observeEvent(separatSEL(),	{
 	FACETS	<-	tagList(
-		lapply(input$dataSel, function(i)	{
+		lapply(separatSEL(), function(i)	{
 			IN			<-	findDATA(i)
 			IN$Stroke	<-	findSTRK(IN$Displacement)
 
@@ -27,17 +27,19 @@ observeEvent(input$dataSel,	{
 		})
 	)
 
-	output$graphFORCE	<-	renderUI(FACETS)
+	output$graphSEP	<-	renderUI(FACETS)
 })
+observeEvent(input$dataSelClear,	output$graphSEP	<-	NULL)
 
-observeEvent(input$dataLayer,	{
-	output$graphLAYER	<-	renderPlot(	
+observeEvent(overlaySEL(),	{
+	output$graphLAY	<-	renderPlot(	
 	{	graphSTROKE() + ggtitle("Force Curve Overlay") + 
-		lapply(input$dataLayer, function(i)	{
+		lapply(overlaySEL(), function(i)	{
 			hold	<-	findDATA(i)	;	hold$Stroke	<-	findSTRK(hold$Displacement)
 			geom_line(data = dispREFL(hold),	aes(x = Reflect, y = Force, color = Switch))
 		}	)
 	},	res = 90)
 })
+observeEvent(input$dataLayerClear,	output$graphLAY	<-	NULL)
 
 

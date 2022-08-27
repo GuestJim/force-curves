@@ -19,10 +19,13 @@ FILES	=	as.list(setNames(CSVs, gsub("(.*)/.*", "\\1", CSVs)))
 source("app_UI.r", local = TRUE)
 
 server <- function(input, output, session) {
+	separatSEL	<-	reactiveVal()	;	observe(	separatSEL(input$dataSel)	)
+	overlaySEL	<-	reactiveVal()	;	observe(	overlaySEL(input$dataLayer)	)
+	
+	observeEvent(input$dataSelApply,	overlaySEL(input$dataSel)	)
+	observeEvent(input$dataLayerApply,	separatSEL(input$dataLayer)	)
+	
 	source("app_graphs.r", local = TRUE)
-	observeEvent(input$dataSel,	{
-		output$test	<-	renderText(input$dataSel)
-	}	)
 }
 
 shinyApp(ui = ui, server = server, enableBookmarking = "url")
