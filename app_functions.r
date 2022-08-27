@@ -12,7 +12,7 @@ findDATA	=	function(FILE)	{
 findSTRK	=	function(IN)	{
 	BOTTOM	=	ceiling(median(which(IN == max(IN))))
 	
-	return(	ordered(ifelse(1:length(IN) < BOTTOM, "Down", "Up"), c("Down", "Up"))	)
+	return(	ordered(ifelse(1:length(IN) < BOTTOM, "Down", "Up"), (c("Down", "Up")))	)
 }
 
 dispREFL	=	function(IN)	{	
