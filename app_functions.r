@@ -3,7 +3,7 @@ library(readr)
 
 findDATA	=	function(FILE)	{
 	TEXT	=	readLines(FILE,	warn = FALSE,	n =100)
-	for (LINE in 1:length(TEXT))	{	if (TEXT[LINE] == "No.,Force,Unit,Displacement,Unit,Judge,Position,Time,Date,")	break	}
+	for (LINE in 1:length(TEXT))	{	if (startsWith(TEXT[LINE], "No.,Force,Unit,Displacement,Unit,Judge,Position,Time,Date"))	break	}
 	out	<-	read_csv(FILE, skip = LINE - 1, guess_max = 10, lazy = TRUE, show_col_types = FALSE, col_select=c("Force", "Displacement"))
 	out$Switch	<-	factor(gsub("(.*)/.*", "\\1", FILE))
 	return(out)
