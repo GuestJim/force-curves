@@ -1,28 +1,44 @@
 if (!require(ggplot2))	install.packages('ggplot2')
 library(ggplot2)
 
+theme_set(theme_grey(base_size = 12))
+
 STROKEcolor	=	scale_color_manual(values = c("Down" = "black", "Up" = "darkgrey"), guide = "none")
 
-graphSTRK	<-	function(IN, NAME = NULL)	{
-	ggplot(IN[IN$Force !=0, ],	aes(x = Reflect, y = Force, color = Stroke)) +
-	ggtitle(paste0(NAME, " Force Curve")) +
+graphSTROKE	<-	function()	{
+	ggplot() +
 	geom_vline(xintercept = 0) + geom_hline(yintercept = 0) +
-	# geom_point() + STROKEcolor +
-	geom_line() + STROKEcolor +
 	scale_x_continuous(name	=	"Displacement (mm)",	breaks	=	-5:5) +
 	scale_y_continuous(name	=	"Force (gf)",			breaks	=	seq(0, 1000, by = 20)) +
-	facet_grid(cols = vars(Stroke), scales = "free_x")
+	facet_grid(cols = vars(Stroke), scales = "free_x", labeller = labeller(Stroke = function(IN) paste0(IN, " Stroke"))) + 
+	theme(legend.position = "top")
 }
 
-observeEvent(input$dataSel,	{
-	GRAPHS	<-	tagList(
+observeEvent(list(input$dataSel, input$forceScale),	{
+	FACETS	<-	tagList(
 		lapply(input$dataSel, function(i)	{
-			DATA		<-	findDATA(i)
-			DATA$Stroke	<-	findSTRK(DATA$Displacement)
+			IN			<-	findDATA(i)
+			IN$Stroke	<-	findSTRK(IN$Displacement)
 
-			renderPlot(graphSTRK(dispREFL(DATA), gsub("(.*)/.*", "\\1", i))	)
+			renderCachedPlot(	
+				{	graphSTROKE() + ggtitle(paste0(unique(IN$Switch), " Force Curve")) + 
+					geom_line(data =  dispREFL(IN[IN$Force !=0, ]),	aes(x = Reflect, y = Force, color = Stroke)) + STROKEcolor	},
+				i,	res = 90,	sizePolicy = sizeGrowthRatio(1280, 720, 1.5)	)
 		})
 	)
 
-	output$graphFORCE	<-	renderUI(GRAPHS)
+	output$graphFORCE	<-	renderUI(FACETS)
 })
+
+observeEvent(input$dataLayer,	{
+	# output$graphLAYER	<-	renderPlot(	STROKElayer(input$dataLayer),	res = 90)
+	output$graphLAYER	<-	renderPlot(	
+	{	graphSTROKE() + ggtitle("Force Curve Overlay") + 
+		lapply(input$dataLayer, function(i)	{
+			hold	<-	findDATA(i)	;	hold$Stroke	<-	findSTRK(hold$Displacement)
+			geom_line(data = dispREFL(hold),	aes(x = Reflect, y = Force, color = Switch))
+		}	)
+	},	res = 90)
+})
+
+

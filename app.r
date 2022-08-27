@@ -3,6 +3,12 @@ library(shiny)
 setwd("E:/Users/Jim/My Documents/Ideas/Switch Force Curve Graphs/force-curves")
 # runApp()
 
+#	plot caching options
+#	shinyOptions(cache = cachem::cache_disk(file.path(dirname(tempdir()), "myapp-cache")))
+#		cache cleared when system reboots
+#	shinyOptions(cache = cachem::cache_disk("./myapp-cache"))
+#		cache survives rebooting
+
 source("app_functions.r", local = TRUE)
 
 CSVs	=	list.files(recursive = TRUE, pattern = "*CSV.csv")
