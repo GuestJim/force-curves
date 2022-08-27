@@ -5,7 +5,8 @@ ui	<-	ui <- function(request)	{
 				sidebarPanel(
 					helpText("Ctrl and Shift to select multiple"),
 					selectInput('dataSel',		label = "Switch Selection",	choices = FILES,	size = 10,	multiple = TRUE,	selectize = FALSE),
-					actionButton('dataSelClear',	label = "Clear Selection"),
+					# selectInput('dataSel',		label = "Switch Selection",	choices = FILES,	multiple = TRUE,	selectize = TRUE),
+					actionButton('dataSelClear',	label = "Clear Graphs"),
 					actionButton('dataSelApply',	label = "Apply Selection to Overlay"),
 				),
 				mainPanel(
@@ -18,7 +19,8 @@ ui	<-	ui <- function(request)	{
 				sidebarPanel(
 					helpText("Ctrl and Shift to select multiple"),
 					selectInput('dataLayer',	label = "Switch Selection",	choices = FILES,	size = 10,	multiple = TRUE,	selectize = FALSE),
-					actionButton('dataLayerClear',	label = "Clear Selection"),
+					# selectInput('dataLayer',	label = "Switch Selection",	choices = FILES,	multiple = TRUE,	selectize = TRUE),
+					actionButton('dataLayerClear',	label = "Clear Graph"),
 					actionButton('dataLayerApply',	label = "Apply Selection to Separate Graphs"),
 				),
 				mainPanel(
