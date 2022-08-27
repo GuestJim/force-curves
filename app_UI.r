@@ -12,6 +12,9 @@ selectionUI	<-	function(id)	{
 			actionButton(pasteID("Apply"),	label = "Apply Selection to Overlay"),
 			hr(),
 			bookmarkButton(label = "Bookmark Switch Selection",	title = "Bookmark Switch Selection"),
+			a("ThereminGoat.com",		href="https://www.theremingoat.com/"),
+			br(),
+			a("Force Curve Repository",	href="https://github.com/ThereminGoat/force-curves"),
 		)
 	)
 }
@@ -34,7 +37,5 @@ ui	<-	ui <- function(request)	{
 				)
 			)
 		),
-		p(a("ThereminGoat.com",		href="https://www.theremingoat.com/")),
-		p(a("Force Curve Repository",	href="https://github.com/ThereminGoat/force-curves")),
 	)
 }
