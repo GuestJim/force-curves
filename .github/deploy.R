@@ -42,7 +42,8 @@ accountToken <- required("INPUT_ACCOUNTTOKEN")
 accountSecret <- required("INPUT_ACCOUNTSECRET")
 
 # optional inputs
-appFiles <- optional("INPUT_APPFILES")
+# appFiles <- optional("INPUT_APPFILES")
+appFiles <- c("app.r", "app_functions.r", "app_graphs.r", "app_UI.r", list.files(recursive = TRUE, pattern = "*CSV.csv"))
 appFileManifest <- optional("INPUT_APPFILEMANIFEST")
 appTitle <- optional("INPUT_APPTITLE")
 logLevel <- optional("INPUT_LOGLEVEL")
