@@ -34,5 +34,7 @@ ui	<-	ui <- function(request)	{
 				)
 			)
 		),
+		p(a("ThereminGoat.com",		href="https://www.theremingoat.com/")),
+		p(a("Force Curve Repository",	href="https://github.com/ThereminGoat/force-curves")),
 	)
 }
