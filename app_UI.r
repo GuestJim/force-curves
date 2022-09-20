@@ -1,7 +1,7 @@
-selectionUI	<-	function(id)	{
-	ns	<-	NS(id)
+selectionUI	<-	function(name)	{
+	ns	<-	NS(name)
 	
-	pasteID	<-	function(IN = NULL)	paste0("data", as.character(id), IN)
+	pasteID	<-	function(IN = NULL)	paste0("data", as.character(name), IN)
 	
 	tagList(
 		sidebarPanel(
