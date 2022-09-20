@@ -14,6 +14,31 @@ graphSTROKE	<-	function()	{
 	theme(legend.position = "top")
 }
 
+separaServer	<-	function(name)	{	moduleServer(name,	function(input, output, session)	{
+	observeEvent(input$SEL,	{
+		FACETS	<-	tagList(
+			lapply(input$SEL, function(i)	{
+				IN			<-	findDATA(i)
+				IN$Stroke	<-	findSTRK(IN$Displacement)
+
+				renderCachedPlot(	
+					{	graphSTROKE() + ggtitle(paste0(unique(IN$Switch), " Force Curve")) + 
+						geom_line(data =  dispREFL(IN[IN$Force !=0, ]),	aes(x = Reflect, y = Force, color = Stroke)) + STROKEcolor	},
+					i,	res = 90,	sizePolicy = sizeGrowthRatio(1280, 720, 1.5)	)
+			})
+		)
+		
+	output$graphSEP	<-	renderUI(FACETS)
+	})
+	
+})}
+
+separaServer('Sel')
+
+overlayServer	<-	function(name)	{	moduleServer(name,	function(input, output, session)	{
+
+})}
+
 observeEvent(separatSEL(),	{
 	FACETS	<-	tagList(
 		lapply(separatSEL(), function(i)	{
