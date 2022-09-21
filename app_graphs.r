@@ -14,6 +14,19 @@ graphSTROKE	<-	function()	{
 	theme(legend.position = "top")
 }
 
+clearServer	<-	function(name)	{	moduleServer(name,	function(input, output, session)	{
+	observeEvent(input$CLR,	{
+		updateSelectInput(inputId = "SEL", selected = "")	;	output$graph	<-	NULL
+	}	)
+})}
+
+searchServer	<-	function(name)	{	moduleServer(name,	function(input, output, session)	{
+	observeEvent(input$IZE,	{
+		updateSelectInput(inputId = "SEL",	selected = c(input$SEL, input$IZE))
+		updateSelectInput(inputId = "IZE",	selected = "")
+	}	)
+})}
+
 separatServer	<-	function(name)	{	moduleServer(name,	function(input, output, session)	{
 	observeEvent(input$SEL,	{
 		FACETS	<-	tagList(
@@ -30,44 +43,19 @@ separatServer	<-	function(name)	{	moduleServer(name,	function(input, output, ses
 		
 		output$graph	<-	renderUI(FACETS)
 	})
-	
 })}
-
-separatServer('separat')
-# separaServer('overlay')
 
 overlayServer	<-	function(name)	{	moduleServer(name,	function(input, output, session)	{
-
+	observeEvent(input$SEL,	{
+		output$graph	<-	renderPlot(	
+		{	graphSTROKE() + ggtitle("Force Curve Overlay") + 
+			lapply(input$SEL, function(i)	{
+				hold	<-	findDATA(i)	;	hold$Stroke	<-	findSTRK(hold$Displacement)
+				geom_line(data = dispREFL(hold),	aes(x = Reflect, y = Force, color = Switch))
+			}	)
+		},	res = 90)
+	})
 })}
 
-observeEvent(separatSEL(),	{
-	FACETS	<-	tagList(
-		lapply(separatSEL(), function(i)	{
-			IN			<-	findDATA(i)
-			IN$Stroke	<-	findSTRK(IN$Displacement)
-
-			renderCachedPlot(	
-				{	graphSTROKE() + ggtitle(paste0(unique(IN$Switch), " Force Curve")) + 
-					geom_line(data =  dispREFL(IN[IN$Force !=0, ]),	aes(x = Reflect, y = Force, color = Stroke)) + STROKEcolor	},
-				i,	res = 90,	sizePolicy = sizeGrowthRatio(1280, 720, 1.5)	)
-		})
-	)
-
-	output$graphSEP	<-	renderUI(FACETS)
-})
-observeEvent(input$dataSelClear,	{
-	updateSelectInput(inputId = "dataSel", selected = "")	;	output$graphSEP	<-	NULL
-}	)
-
-observeEvent(overlaySEL(),	{
-	output$graphLAY	<-	renderPlot(	
-	{	graphSTROKE() + ggtitle("Force Curve Overlay") + 
-		lapply(overlaySEL(), function(i)	{
-			hold	<-	findDATA(i)	;	hold$Stroke	<-	findSTRK(hold$Displacement)
-			geom_line(data = dispREFL(hold),	aes(x = Reflect, y = Force, color = Switch))
-		}	)
-	},	res = 90)
-})
-observeEvent(input$dataLayerClear,	{
-	updateSelectInput(inputId = "dataLayer", selected = "")	;	output$graphLAY	<-	NULL
-}	)
+separatServer('separat')	;	clearServer('separat')	;	searchServer('separat')
+overlayServer('overlay')	;	clearServer('overlay')	;	searchServer('overlay')

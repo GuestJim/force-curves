@@ -38,7 +38,8 @@ ui	<-	ui <- function(request)	{
 			sidebarLayout(
 				selectionUI("overlay"),
 				mainPanel(
-					plotOutput('graphLAY',	height = "520px"),
+					# plotOutput('graphLAY',	height = "520px"),
+					graphUI('overlay',	HEIGHT = "520px"),
 				)
 			)
 		),
