@@ -1,17 +1,13 @@
-selectionUI	<-	function(id)	{
-	ns	<-	NS(id)
-	
-	pasteID	<-	function(IN = NULL)	paste0("data", as.character(id), IN)
-	
+selectionUI	<-	function(name)	{	ns	<-	NS(name)
 	tagList(
 		sidebarPanel(
 			helpText("Ctrl and Shift to select multiple"),
-			selectInput(pasteID(),		label = "Switch Selection",	choices = FILES,	size = 10,	multiple = TRUE,	selectize = FALSE),
-			selectizeInput(pasteID("IZE"),		label = "Switch Search",	choices = FILES,	multiple = TRUE),
-			actionButton(pasteID("Clear"),	label = "Clear Selection"),
-			actionButton(pasteID("Apply"),	label = "Apply Selection to Other Tab"),
+			selectInput(ns('SEL'),		label = "Switch Selection",	choices = FILES,	size = 10,	multiple = TRUE,	selectize = FALSE),
+			selectizeInput(ns('IZE'),	label = "Switch Search",	choices = FILES,	multiple = TRUE),
+			actionButton(ns('CLR'),		label = "Clear Selection"),
+			actionButton(ns('APP'),		label = "Apply Selection to Other Tab"),
 			hr(),
-			bookmarkButton(label = "Bookmark Switch Selection",	title = "Bookmark Switch Selection"),
+			bookmarkButton(id = ns("BM"),	label = "Bookmark Switch Selection",	title = "Bookmark Switch Selection"),
 			a("ThereminGoat.com",		href="https://www.theremingoat.com/"),
 			br(),
 			a("Force Curve Repository",	href="https://github.com/ThereminGoat/force-curves"),
@@ -19,21 +15,26 @@ selectionUI	<-	function(id)	{
 	)
 }
 
+graphUI	<-	function(name, TYPE, HEIGHT)	{	ns	<-	NS(name)
+	if (name == "separat")	return(	uiOutput(ns('graph'))	)
+	if (name == "overlay")	return(	plotOutput(ns('graph'),	height = HEIGHT)	)
+}
+
 ui	<-	ui <- function(request)	{
 	navbarPage("Interactive Force Curve Graphs",
 		tabPanel("Separate Graphs",
 			sidebarLayout(
-				selectionUI("Sel"),
+				selectionUI("separat"),
 				mainPanel(
-					uiOutput('graphSEP'),
+					graphUI('separat'),
 				)
 			)
 		),
 		tabPanel("Overlay Graph",
 			sidebarLayout(
-				selectionUI("Layer"),
+				selectionUI("overlay"),
 				mainPanel(
-					plotOutput('graphLAY',	height = "520px"),
+					graphUI('overlay',	HEIGHT = "520px"),
 				)
 			)
 		),
