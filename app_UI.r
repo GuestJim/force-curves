@@ -9,7 +9,7 @@ selectionUI	<-	function(name)	{
 			actionButton(ns('CLR'),		label = "Clear Selection"),
 			actionButton(ns('APP'),		label = "Apply Selection to Other Tab"),
 			hr(),
-			bookmarkButton(label = "Bookmark Switch Selection",	title = "Bookmark Switch Selection"),
+			bookmarkButton(id = ns("BM"),	label = "Bookmark Switch Selection",	title = "Bookmark Switch Selection"),
 			a("ThereminGoat.com",		href="https://www.theremingoat.com/"),
 			br(),
 			a("Force Curve Repository",	href="https://github.com/ThereminGoat/force-curves"),
@@ -38,7 +38,6 @@ ui	<-	ui <- function(request)	{
 			sidebarLayout(
 				selectionUI("overlay"),
 				mainPanel(
-					# plotOutput('graphLAY',	height = "520px"),
 					graphUI('overlay',	HEIGHT = "520px"),
 				)
 			)

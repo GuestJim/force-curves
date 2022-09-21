@@ -14,6 +14,11 @@ graphSTROKE	<-	function()	{
 	theme(legend.position = "top")
 }
 
+bookmarkServer	<-	function(name)	{	moduleServer(name,	function(input, output, session)	{
+	observeEvent(input$BM, session$doBookmark())
+})}
+#	to have a Bookmark button on both pages, it is necessary to have different IDs and to run an observer like this
+
 clearServer	<-	function(name)	{	moduleServer(name,	function(input, output, session)	{
 	observeEvent(input$CLR,	{
 		updateSelectInput(inputId = "SEL", selected = "")	;	output$graph	<-	NULL
@@ -27,23 +32,14 @@ searchServer	<-	function(name)	{	moduleServer(name,	function(input, output, sess
 	}	)
 })}
 
-
-selApplyServer	<-	function(name, TARGET)	{	moduleServer(name,	function(input, output, session)	{
-	observeEvent(input$APP,	{	updateSelectInput(inputId = NS(TARGET, "SEL"),	selected = input$SEL)	}	)
-})}
-
-selApplyServer("separat", "overlay")
-selApplyServer("overlay", "separat")
-
-
 selApply	<-	function(name, TARGET)	{
-	updateSelectInput(inputId = NS(TARGET, "SEL"),	selected = input[[NS(name, "SEL")]])
+	updateSelectInput(inputId = NS(TARGET, "SEL"),	selected = input[[	NS(name, "SEL")	]])
 }
 
 observeEvent(input[[	NS("separat", "APP")	]],	selApply("separat", "overlay"))
 observeEvent(input[[	NS("overlay", "APP")	]],	selApply("overlay", "separat"))
 
-separatServer	<-	function(name)	{	clearServer(name)	;	searchServer(name)
+separatServer	<-	function(name)	{	clearServer(name)	;	searchServer(name)	;	bookmarkServer(name)
 	moduleServer(name,	function(input, output, session)	{
 	observeEvent(input$SEL,	{	
 		FACETS	<-	tagList(
@@ -62,7 +58,7 @@ separatServer	<-	function(name)	{	clearServer(name)	;	searchServer(name)
 	})
 })	}
 
-overlayServer	<-	function(name)	{	clearServer(name)	;	searchServer(name)
+overlayServer	<-	function(name)	{	clearServer(name)	;	searchServer(name)	;	bookmarkServer(name)
 	moduleServer(name,	function(input, output, session)	{
 		observeEvent(input$SEL,	{
 			output$graph	<-	renderPlot(

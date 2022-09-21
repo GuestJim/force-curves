@@ -19,24 +19,7 @@ FILES	=	as.list(setNames(CSVs, gsub("(.*)/.*", "\\1", CSVs)))
 source("app_UI.r", local = TRUE)
 
 server <- function(input, output, session) {
-	setBookmarkExclude(c("dataSelApply", "dataSelClear", "dataSelIZE", "dataLayerApply", "dataLayerClear", "dataLayerIZE"))
-	separatSEL	<-	reactiveVal()	;	observe(	separatSEL(input$dataSel)	)
-	overlaySEL	<-	reactiveVal()	;	observe(	overlaySEL(input$dataLayer)	)
-	
-	#	apply selected layers to other graph type
-	observeEvent(input$dataSelApply,	overlaySEL(input$dataSel)	)
-	observeEvent(input$dataLayerApply,	separatSEL(input$dataLayer)	)
-	
-	#	searching switches with selectizeInput but normal selectInput is master
-	observeEvent(input$dataSelIZE,	{
-		updateSelectInput(inputId = "dataSel",		selected = c(input$dataSel, input$dataSelIZE))
-		updateSelectInput(inputId = "dataSelIZE",	selected = "")
-	}	)
-	
-	observeEvent(input$dataLayerIZE,	{
-		updateSelectInput(inputId = "dataLayer",		selected = c(input$dataLayer, input$dataLayerIZE))
-		updateSelectInput(inputId = "dataLayerIZE",	selected = "")
-	}	)
+	setBookmarkExclude(c("separat-IZE","separat-CLR","separat-APP", "separat-BM","overlay-IZE","overlay-CLR","overlay-APP", "overlay-BM"))
 	
 	source("app_graphs.r", local = TRUE)
 }
