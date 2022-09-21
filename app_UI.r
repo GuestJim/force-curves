@@ -11,6 +11,8 @@ selectionUI	<-	function(name)	{	ns	<-	NS(name)
 			a("ThereminGoat.com",		href="https://www.theremingoat.com/"),
 			br(),
 			a("Force Curve Repository",	href="https://github.com/ThereminGoat/force-curves"),
+			br(),
+			a("Applet Repository",	href="https://github.com/GuestJim/force-curves/tree/R-Shiny"),
 		)
 	)
 }
