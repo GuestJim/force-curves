@@ -1,15 +1,13 @@
 selectionUI	<-	function(name)	{
 	ns	<-	NS(name)
 	
-	pasteID	<-	function(IN = NULL)	paste0("data", as.character(name), IN)
-	
 	tagList(
 		sidebarPanel(
 			helpText("Ctrl and Shift to select multiple"),
-			selectInput('SEL',		label = "Switch Selection",	choices = FILES,	size = 10,	multiple = TRUE,	selectize = FALSE),
-			selectizeInput('IZE',	label = "Switch Search",	choices = FILES,	multiple = TRUE),
-			actionButton('CLR',		label = "Clear Selection"),
-			actionButton('APP',		label = "Apply Selection to Other Tab"),
+			selectInput(ns('SEL'),		label = "Switch Selection",	choices = FILES,	size = 10,	multiple = TRUE,	selectize = FALSE),
+			selectizeInput(ns('IZE'),	label = "Switch Search",	choices = FILES,	multiple = TRUE),
+			actionButton(ns('CLR'),		label = "Clear Selection"),
+			actionButton(ns('APP'),		label = "Apply Selection to Other Tab"),
 			hr(),
 			bookmarkButton(label = "Bookmark Switch Selection",	title = "Bookmark Switch Selection"),
 			a("ThereminGoat.com",		href="https://www.theremingoat.com/"),
@@ -19,19 +17,26 @@ selectionUI	<-	function(name)	{
 	)
 }
 
+graphUI	<-	function(name, TYPE, HEIGHT)	{
+	ns	<-	NS(name)
+	
+	if (name == "separat")	return(	uiOutput(ns('graph'))	)
+	if (name == "overlay")	return(	plotOutput(ns('graph'),	height = HEIGHT)	)
+}
+
 ui	<-	ui <- function(request)	{
 	navbarPage("Interactive Force Curve Graphs",
 		tabPanel("Separate Graphs",
 			sidebarLayout(
-				selectionUI("Sel"),
+				selectionUI("separat"),
 				mainPanel(
-					uiOutput('Sel-graphSEP'),
+					graphUI('separat'),
 				)
 			)
 		),
 		tabPanel("Overlay Graph",
 			sidebarLayout(
-				selectionUI("Layer"),
+				selectionUI("overlay"),
 				mainPanel(
 					plotOutput('graphLAY',	height = "520px"),
 				)

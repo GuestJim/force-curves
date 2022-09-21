@@ -14,7 +14,7 @@ graphSTROKE	<-	function()	{
 	theme(legend.position = "top")
 }
 
-separaServer	<-	function(name)	{	moduleServer(name,	function(input, output, session)	{
+separatServer	<-	function(name)	{	moduleServer(name,	function(input, output, session)	{
 	observeEvent(input$SEL,	{
 		FACETS	<-	tagList(
 			lapply(input$SEL, function(i)	{
@@ -28,12 +28,13 @@ separaServer	<-	function(name)	{	moduleServer(name,	function(input, output, sess
 			})
 		)
 		
-	output$graphSEP	<-	renderUI(FACETS)
+		output$graph	<-	renderUI(FACETS)
 	})
 	
 })}
 
-separaServer('Sel')
+separatServer('separat')
+# separaServer('overlay')
 
 overlayServer	<-	function(name)	{	moduleServer(name,	function(input, output, session)	{
 
