@@ -27,9 +27,25 @@ searchServer	<-	function(name)	{	moduleServer(name,	function(input, output, sess
 	}	)
 })}
 
-separatServer	<-	function(name)	{
-	clearServer(name)	;	searchServer(name)	;	moduleServer(name,	function(input, output, session)	{
-	observeEvent(input$SEL,	{
+
+selApplyServer	<-	function(name, TARGET)	{	moduleServer(name,	function(input, output, session)	{
+	observeEvent(input$APP,	{	updateSelectInput(inputId = NS(TARGET, "SEL"),	selected = input$SEL)	}	)
+})}
+
+selApplyServer("separat", "overlay")
+selApplyServer("overlay", "separat")
+
+
+selApply	<-	function(name, TARGET)	{
+	updateSelectInput(inputId = NS(TARGET, "SEL"),	selected = input[[NS(name, "SEL")]])
+}
+
+observeEvent(input[[	NS("separat", "APP")	]],	selApply("separat", "overlay"))
+observeEvent(input[[	NS("overlay", "APP")	]],	selApply("overlay", "separat"))
+
+separatServer	<-	function(name)	{	clearServer(name)	;	searchServer(name)
+	moduleServer(name,	function(input, output, session)	{
+	observeEvent(input$SEL,	{	
 		FACETS	<-	tagList(
 			lapply(input$SEL, function(i)	{
 				IN			<-	findDATA(i)
@@ -44,20 +60,20 @@ separatServer	<-	function(name)	{
 
 		output$graph	<-	renderUI(FACETS)
 	})
-})}
+})	}
 
-overlayServer	<-	function(name)	{
-	clearServer(name)	;	searchServer(name)	;	moduleServer(name,	function(input, output, session)	{
-	observeEvent(input$SEL,	{
-		output$graph	<-	renderPlot(
-		{	graphSTROKE() + ggtitle("Force Curve Overlay") +
-			lapply(input$SEL, function(i)	{
-				hold	<-	findDATA(i)	;	hold$Stroke	<-	findSTRK(hold$Displacement)
-				geom_line(data = dispREFL(hold),	aes(x = Reflect, y = Force, color = Switch))
-			}	)
-		},	res = 90)
-	})
-})}
+overlayServer	<-	function(name)	{	clearServer(name)	;	searchServer(name)
+	moduleServer(name,	function(input, output, session)	{
+		observeEvent(input$SEL,	{
+			output$graph	<-	renderPlot(
+			{	graphSTROKE() + ggtitle("Force Curve Overlay") +
+				lapply(input$SEL, function(i)	{
+					hold	<-	findDATA(i)	;	hold$Stroke	<-	findSTRK(hold$Displacement)
+					geom_line(data = dispREFL(hold),	aes(x = Reflect, y = Force, color = Switch))
+				}	)
+			},	res = 90)
+		})
+})	}
 
 separatServer('separat')
 overlayServer('overlay')
