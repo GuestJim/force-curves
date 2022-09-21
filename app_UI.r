@@ -1,6 +1,4 @@
-selectionUI	<-	function(name)	{
-	ns	<-	NS(name)
-	
+selectionUI	<-	function(name)	{	ns	<-	NS(name)
 	tagList(
 		sidebarPanel(
 			helpText("Ctrl and Shift to select multiple"),
@@ -17,9 +15,7 @@ selectionUI	<-	function(name)	{
 	)
 }
 
-graphUI	<-	function(name, TYPE, HEIGHT)	{
-	ns	<-	NS(name)
-	
+graphUI	<-	function(name, TYPE, HEIGHT)	{	ns	<-	NS(name)
 	if (name == "separat")	return(	uiOutput(ns('graph'))	)
 	if (name == "overlay")	return(	plotOutput(ns('graph'),	height = HEIGHT)	)
 }

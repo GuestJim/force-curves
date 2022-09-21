@@ -32,13 +32,6 @@ searchServer	<-	function(name)	{	moduleServer(name,	function(input, output, sess
 	}	)
 })}
 
-selApply	<-	function(name, TARGET)	{
-	updateSelectInput(inputId = NS(TARGET, "SEL"),	selected = input[[	NS(name, "SEL")	]])
-}
-
-observeEvent(input[[	NS("separat", "APP")	]],	selApply("separat", "overlay"))
-observeEvent(input[[	NS("overlay", "APP")	]],	selApply("overlay", "separat"))
-
 separatServer	<-	function(name)	{	clearServer(name)	;	searchServer(name)	;	bookmarkServer(name)
 	moduleServer(name,	function(input, output, session)	{
 	observeEvent(input$SEL,	{	
@@ -73,3 +66,11 @@ overlayServer	<-	function(name)	{	clearServer(name)	;	searchServer(name)	;	bookm
 
 separatServer('separat')
 overlayServer('overlay')
+
+selApply	<-	function(name, TARGET)	{
+	updateSelectInput(inputId = NS(TARGET, "SEL"),	selected = input[[	NS(name, "SEL")	]])
+}
+
+observeEvent(input[[	NS("separat", "APP")	]],	selApply("separat", "overlay"))
+observeEvent(input[[	NS("overlay", "APP")	]],	selApply("overlay", "separat"))
+#	this is to watch the Apply buttons, piercing the namespaces, and then changing the appropriate selectInput

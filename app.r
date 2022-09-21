@@ -19,7 +19,9 @@ FILES	=	as.list(setNames(CSVs, gsub("(.*)/.*", "\\1", CSVs)))
 source("app_UI.r", local = TRUE)
 
 server <- function(input, output, session) {
-	setBookmarkExclude(c("separat-IZE","separat-CLR","separat-APP", "separat-BM","overlay-IZE","overlay-CLR","overlay-APP", "overlay-BM"))
+	setBookmarkExclude(c(
+		"separat-IZE", "separat-CLR", "separat-APP", "separat-BM",
+		"overlay-IZE", "overlay-CLR", "overlay-APP", "overlay-BM"	))
 	
 	source("app_graphs.r", local = TRUE)
 }
