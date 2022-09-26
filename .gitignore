@@ -2,3 +2,4 @@
 *.xlsx
 ShinyApps Upload.r
 *.dcf
+run_app.r

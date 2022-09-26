@@ -1,7 +1,4 @@
 library(shiny)
-# setwd("C:/Users/Jim/Documents/ThereminGoat/force-curves")
-# setwd("E:/Users/Jim/My Documents/Ideas/Switch Force Curve Graphs/force-curves")
-# runApp()
 
 #	plot caching options
 #	shinyOptions(cache = cachem::cache_disk(file.path(dirname(tempdir()), "myapp-cache")))
