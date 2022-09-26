@@ -8,6 +8,7 @@ selectionUI	<-	function(name)	{	ns	<-	NS(name)
 			actionButton(ns('APP'),		label = "Apply Selection to Other Tab"),
 			hr(),
 			bookmarkButton(id = ns("BM"),	label = "Bookmark Switch Selection",	title = "Bookmark Switch Selection"),
+			br(),
 			a("ThereminGoat.com",		href="https://www.theremingoat.com/"),
 			br(),
 			a("Force Curve Repository",	href="https://github.com/ThereminGoat/force-curves"),
