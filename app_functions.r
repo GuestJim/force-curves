@@ -15,8 +15,8 @@ findSTRK	=	function(IN)	{
 	return(	ordered(ifelse(1:length(IN) < BOTTOM, "Down", "Up"), (c("Down", "Up")))	)
 }
 
-dispREFL	=	function(IN)	{	
-	IN$Reflect	<-	ifelse(IN$Stroke == "Down", IN$Displacement, -IN$Displacement)
+dispREFL	=	function(IN, OFFSET = 0)	{	
+	IN$Reflect	<-	ifelse(IN$Stroke == "Down", IN$Displacement - OFFSET, -(IN$Displacement - OFFSET))
 	return(IN)
 }
 

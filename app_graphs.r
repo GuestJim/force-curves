@@ -34,16 +34,17 @@ searchServer	<-	function(name)	{	moduleServer(name,	function(input, output, sess
 
 separatServer	<-	function(name)	{	clearServer(name)	;	searchServer(name)	;	bookmarkServer(name)
 	moduleServer(name,	function(input, output, session)	{
-	observeEvent(input$SEL,	{	
+	observeEvent(list(input$SEL, input$OFF),	{	
 		FACETS	<-	tagList(
 			lapply(input$SEL, function(i)	{
-				IN			<-	findDATA(i)
-				IN$Stroke	<-	findSTRK(IN$Displacement)
+				IN	<-	findDATA(i)	;	IN$Stroke	<-	findSTRK(IN$Displacement)
+				PRE	<-	0	;	if (input$OFF)	PRE	<-	max(IN$Displacement[IN$Force == 0])
 
 				renderCachedPlot(
 					{	graphSTROKE() + ggtitle(paste0(unique(IN$Switch), " Force Curve")) +
-						geom_line(data =  dispREFL(IN[IN$Force !=0, ]),	aes(x = Reflect, y = Force, color = Stroke)) + STROKEcolor	},
-					i,	res = 90,	sizePolicy = sizeGrowthRatio(1280, 720, 1.5)	)
+						geom_line(data =  dispREFL(IN, PRE),	aes(x = Reflect, y = Force, color = Stroke)) + STROKEcolor	},
+					cacheKeyExpr = {	list(i, isolate(input$OFF))	},
+					res = 90,	sizePolicy = sizeGrowthRatio(1280, 720, 1.5)	)
 			})
 		)
 
@@ -53,14 +54,18 @@ separatServer	<-	function(name)	{	clearServer(name)	;	searchServer(name)	;	bookm
 
 overlayServer	<-	function(name)	{	clearServer(name)	;	searchServer(name)	;	bookmarkServer(name)
 	moduleServer(name,	function(input, output, session)	{
-		observeEvent(input$SEL,	{
+		observeEvent(list(input$SEL, input$OFF),	{
 			output$graph	<-	renderPlot(
 			{	graphSTROKE() + ggtitle("Force Curve Overlay") +
 				lapply(input$SEL, function(i)	{
-					hold	<-	findDATA(i)	;	hold$Stroke	<-	findSTRK(hold$Displacement)
-					geom_line(data = dispREFL(hold),	aes(x = Reflect, y = Force, color = Switch))
+					IN	<-	findDATA(i)	;	IN$Stroke	<-	findSTRK(IN$Displacement)
+					PRE	<-	0	;	if (input$OFF)	PRE	<-	max(IN$Displacement[IN$Force == 0])
+					
+					geom_line(data = dispREFL(IN, PRE),	aes(x = Reflect, y = Force, color = Switch))
 				}	)
 			},	res = 90)
+			
+			if (!isTruthy(input$SEL))	output$graph	<-	NULL
 		})
 })	}
 
@@ -74,3 +79,11 @@ selApply	<-	function(name, TARGET)	{
 observeEvent(input[[	NS("separat", "APP")	]],	selApply("separat", "overlay"))
 observeEvent(input[[	NS("overlay", "APP")	]],	selApply("overlay", "separat"))
 #	this is to watch the Apply buttons, piercing the namespaces, and then changing the appropriate selectInput
+
+offApply	<-	function(name, TARGET)	{
+	updateCheckboxInput(inputId = NS(TARGET, "OFF"),	value = input[[	NS(name, "OFF")	]])
+}
+
+observeEvent(input[[	NS("separat", "OFF")	]],	offApply("separat", "overlay"))
+observeEvent(input[[	NS("overlay", "OFF")	]],	offApply("overlay", "separat"))
+#	this is to watch the Align checkbox, piercing the namespaces, and then changing the appropriate checkbosInput

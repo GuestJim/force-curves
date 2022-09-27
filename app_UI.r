@@ -4,6 +4,7 @@ selectionUI	<-	function(name)	{	ns	<-	NS(name)
 			helpText("Ctrl and Shift to select multiple"),
 			selectInput(ns('SEL'),		label = "Switch Selection",	choices = FILES,	size = 10,	multiple = TRUE,	selectize = FALSE),
 			selectizeInput(ns('IZE'),	label = "Switch Search",	choices = FILES,	multiple = TRUE),
+			checkboxInput(ns('OFF'),	label = "Align Initial Force at 0 mm"),
 			actionButton(ns('CLR'),		label = "Clear Selection"),
 			actionButton(ns('APP'),		label = "Apply Selection to Other Tab"),
 			hr(),
